@@ -36,6 +36,7 @@ namespace Player
 
         [Header("Script References")] 
         private PlayerMovement _playerMovement;
+        private PlayerFiring _playerFiring;
         
         #endregion
 
@@ -51,10 +52,15 @@ namespace Player
         #endregion
         
         #region Game Logic
-        
+
+        private void Awake()
+        {
+            _playerFiring = GetComponent<PlayerFiring>();
+            _playerMovement = GetComponent<PlayerMovement>();
+        }
+
         private void Start()
         {
-            _playerMovement = GetComponent<PlayerMovement>();
             _playerMovement.SetMovementSpeed(playerSpeed);
             SetPlayerLevel(1);
             SetPlayerExperience(0);
@@ -100,6 +106,14 @@ namespace Player
                 {
                     _fireReady = true;
                 }
+            }
+            else
+            {
+                if (!Input.GetKeyDown(KeyCode.Space)) return;
+                
+                _playerFiring.FireNeedle();
+                OnPlayerFire?.Invoke();
+                _fireReady = false;
             }
         }
 

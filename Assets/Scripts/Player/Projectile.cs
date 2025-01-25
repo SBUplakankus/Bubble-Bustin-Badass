@@ -10,6 +10,8 @@ namespace Player
         private int _damage;
         private Rigidbody _rb;
 
+        public static event Action<GameObject> OnNeedleHit; 
+
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
@@ -22,14 +24,16 @@ namespace Player
 
         private void OnTriggerEnter(Collider other)
         {
+            Debug.Log("Hit");
             if (other.gameObject.CompareTag("Bubble"))
             {
                 other.GetComponent<EnemyController>().TakeDamage(_damage);
-                gameObject.SetActive(false);
+                OnNeedleHit?.Invoke(gameObject);
+                
             }
             else
             {
-                gameObject.SetActive(false);
+                OnNeedleHit?.Invoke(gameObject);
             }
         }
     }
