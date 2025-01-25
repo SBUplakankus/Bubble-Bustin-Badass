@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 250726300223198965}
   m_Layer: 0
   m_Name: Needle
-  m_TagString: Untagged
+  m_TagString: Needle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,9 +28,9 @@ Transform:
   m_GameObject: {fileID: 7707539414921546449}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.2322445, y: 3.012644, z: -5.740171}
-  m_LocalScale: {x: 0.13733, y: 0.13733, z: 0.13733}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: -0.0000000029503, y: 0, z: 0}
+  m_LocalScale: {x: 0.19, y: 0.19, z: 0.19}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3549837965431207793}
   m_Father: {fileID: 0}
@@ -50,7 +50,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -144,7 +144,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7761975891709514570}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0

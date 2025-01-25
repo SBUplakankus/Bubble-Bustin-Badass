@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Bubble
   description: Its a basic bubble but it can still hurt.
+  bubbleBodyIndex: 0
   health: 50
-  speed: 5
+  speed: 3
   damage: 20
   xpGiven: 20

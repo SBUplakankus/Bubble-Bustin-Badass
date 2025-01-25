@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Bubble
+  - Needle
   layers:
   - Default
   - TransparentFX

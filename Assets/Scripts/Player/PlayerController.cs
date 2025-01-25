@@ -12,11 +12,16 @@ namespace Player
         
         [Header("Player Attributes")] 
         [SerializeField] private int playerHealth;
-        private int _playerMaxHealth;
         [SerializeField] private int playerHealthRegen;
         [SerializeField] private int playerSpeed;
         [SerializeField] private int playerDamage;
         [SerializeField] private float playerFireRate;
+        [SerializeField] private int projectileStrength;
+        [SerializeField] private int dashStrength;
+        
+        private int _playerMaxHealth;
+        private const float DashCooldown = 5f;
+        private bool _dashReady;
         private float _fireCooldown;
         private bool _fireReady;
         private const int RegenInterval = 1;
@@ -45,6 +50,8 @@ namespace Player
         public static event Action OnPlayerLevelUp;
         public static event Action<int> OnPlayerDamageTaken;
         public static event Action OnPlayerFire;
+
+        public static event Action OnAbilityFire;
         public static event Action OnPlayerDeath;
         public static event Action<int> OnPlayerLevelUpdate;
         public static event Action<int> OnPlayerExpUpdate;
@@ -62,7 +69,7 @@ namespace Player
         private void Start()
         {
             _playerMovement.SetMovementSpeed(playerSpeed);
-            SetPlayerLevel(1);
+            SetPlayerLevel(0);
             SetPlayerExperience(0);
             SetPlayerCash(0);
             SetLevelUpThreshold(100);
@@ -98,6 +105,16 @@ namespace Player
                     _abilityReady = true;
                 }
             }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    _playerFiring.FireAbility(abilityDamage);
+                    _abilityTimer = abilityCooldown;
+                    _abilityReady = false;
+
+                }
+            }
 
             if (!_fireReady)
             {
@@ -111,8 +128,9 @@ namespace Player
             {
                 if (!Input.GetKeyDown(KeyCode.Space)) return;
                 
-                _playerFiring.FireNeedle();
+                _playerFiring.FireNeedle(playerDamage, projectileStrength);
                 OnPlayerFire?.Invoke();
+                _fireCooldown = playerFireRate;
                 _fireReady = false;
             }
         }

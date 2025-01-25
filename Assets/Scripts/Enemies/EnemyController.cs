@@ -18,6 +18,7 @@ namespace Enemies
         [Header("Enemy Info")] 
         [SerializeField] private GameObject[] bubbleBodies;
         [SerializeField] private NavMeshAgent[] bubbleAgents;
+        private EnemyHealthBar _healthBar;
         private NavMeshAgent _navMeshAgent;
         private Transform _player;
 
@@ -25,6 +26,10 @@ namespace Enemies
         public static event Action<GameObject> OnBubbleReset;
         public static event Action<int> OnPlayerDamaged;
 
+        private void Awake()
+        {
+            _healthBar = GetComponent<EnemyHealthBar>();
+        }
 
         private void Update()
         {
@@ -32,7 +37,7 @@ namespace Enemies
             
             _navMeshAgent.SetDestination(_player.position);
             if(_navMeshAgent.pathPending) return;
-            if (_navMeshAgent.remainingDistance is >= 0.5f or <= 0) return;
+            if (_navMeshAgent.remainingDistance is >= 2f or <= 0) return;
             
             DamagePlayer();
 
@@ -50,7 +55,7 @@ namespace Enemies
             {
                 body.SetActive(false);
             }
-
+        
             bubbleBodies[enemySo.bubbleBodyIndex].transform.position = spawnPos.position;
             bubbleBodies[enemySo.bubbleBodyIndex].SetActive(true);
             _navMeshAgent = bubbleAgents[enemySo.bubbleBodyIndex];
@@ -59,6 +64,7 @@ namespace Enemies
             _enemyMaxHealth = _enemyHealth;
             _enemyDamage = enemySo.damage;
             _enemyXpGiven = enemySo.xpGiven;
+            _healthBar.SetInitialHealthBarValues(_enemyHealth, enemySo.bubbleBodyIndex);
             
             _navMeshAgent.speed = enemySo.speed;
             _player = target;
@@ -71,6 +77,7 @@ namespace Enemies
         public void TakeDamage(int damage)
         {
             _enemyHealth -= damage;
+            _healthBar.UpdateHealthBarValues(_enemyHealth);
             if (_enemyHealth > 0) return;
             BubblePopped();
         }

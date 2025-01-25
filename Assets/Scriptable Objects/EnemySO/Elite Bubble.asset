@@ -16,6 +16,6 @@ MonoBehaviour:
   description: Bubble Special Forces
   bubbleBodyIndex: 3
   health: 300
-  speed: 8
+  speed: 5
   damage: 100
   xpGiven: 100

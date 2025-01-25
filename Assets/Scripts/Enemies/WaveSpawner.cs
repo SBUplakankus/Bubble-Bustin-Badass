@@ -85,7 +85,7 @@ namespace Enemies
         private void UpdateBubblesToSpawn()
         {
             _enemiesToSpawn[0] += 5; // Basic
-            if (waveIndex >= 2) _enemiesToSpawn[1] += 2; // Speed
+            if (waveIndex >= 3) _enemiesToSpawn[1] += 2; // Speed
             if (waveIndex >= 4 && waveIndex % 2 == 1) _enemiesToSpawn[2]++; // Tank
             if (waveIndex >= 9 && waveIndex % 2 == 0) _enemiesToSpawn[3]++; // Elite
             if (waveIndex >= 15 && waveIndex % 5 == 0) _enemiesToSpawn[4]++; // Boss
@@ -94,15 +94,17 @@ namespace Enemies
             {
                 _activeBubbleTotal += _enemiesToSpawn[i];
             }
+            
+            OnWaveStart?.Invoke(waveIndex, _activeBubbleTotal);
         }
         
         private IEnumerator WaveSpawnCoroutine()
         {
             yield return new WaitForSeconds(WaveInterval);
-            OnWaveStart?.Invoke(waveIndex, _activeBubbleTotal);
             
             foreach (var spawnType in _enemiesToSpawn)
             {
+                OnBubbleCountUpdate?.Invoke(_activeBubbleTotal);
                 var enemyType = spawnType.Key;
                 var count = spawnType.Value;
                 
@@ -124,7 +126,6 @@ namespace Enemies
                         bubbleBody = Instantiate(bubblePrefab, spawnPositions[spawnIndex]);
                         var bubbleCode = bubbleBody.GetComponent<EnemyController>();
                         bubbleCode.SetEnemy(enemyTypes[enemyType], player, spawnPositions[spawnIndex]);
-                        Debug.Log("New Bubble Needed");
                     }
                     
                     _activeBubblePool.Add(bubbleBody);
@@ -133,7 +134,6 @@ namespace Enemies
                     yield return new WaitForSeconds(SpawnInterval);
                 }
             }
-
             _spawningWave = false;
 
         }

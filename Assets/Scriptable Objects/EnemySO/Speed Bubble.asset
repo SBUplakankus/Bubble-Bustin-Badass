@@ -16,6 +16,6 @@ MonoBehaviour:
   description: Faster than most other bubbles
   bubbleBodyIndex: 1
   health: 30
-  speed: 10
+  speed: 7
   damage: 15
   xpGiven: 25

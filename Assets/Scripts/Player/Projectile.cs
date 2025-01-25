@@ -8,6 +8,7 @@ namespace Player
     {
         private const float Speed = 10f;
         private int _damage;
+        private int _strength;
         private Rigidbody _rb;
 
         public static event Action<GameObject> OnNeedleHit; 
@@ -21,14 +22,29 @@ namespace Player
         {
             _rb.linearVelocity = transform.forward * Speed;
         }
-
+        
+        /// <summary>
+        /// Set the variables for the projectiles before firing
+        /// </summary>
+        /// <param name="damage">Projectile Damage</param>
+        /// <param name="strength">Projectile Penetration Strength</param>
+        public void SetProjectileParameters(int damage, int strength)
+        {
+            _damage = damage;
+            _strength = strength;
+        }
+        
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log("Hit");
             if (other.gameObject.CompareTag("Bubble"))
             {
-                other.GetComponent<EnemyController>().TakeDamage(_damage);
-                OnNeedleHit?.Invoke(gameObject);
+                Debug.Log("Hit");
+                other.GetComponent<EnemyHitDetection>().BubbleTakeDamage(_damage);
+                _strength--;
+                if (_strength <= 0)
+                {
+                    OnNeedleHit?.Invoke(gameObject);
+                }
                 
             }
             else

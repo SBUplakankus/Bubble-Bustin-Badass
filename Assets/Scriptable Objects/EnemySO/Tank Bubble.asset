@@ -16,6 +16,6 @@ MonoBehaviour:
   description: Slow and steady but it can take a beating.
   bubbleBodyIndex: 2
   health: 500
-  speed: 3
+  speed: 2
   damage: 50
   xpGiven: 50
