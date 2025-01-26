@@ -2,7 +2,10 @@ using System;
 using System.Collections;
 using Enemies;
 using Items;
+using SOs;
+using UI;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Player
 {
@@ -11,32 +14,33 @@ namespace Player
         #region Player Variables
         
         [Header("Player Attributes")] 
-        [SerializeField] private int playerHealth;
-        [SerializeField] private int playerHealthRegen;
-        [SerializeField] private int playerSpeed;
-        [SerializeField] private int playerDamage;
-        [SerializeField] private float playerFireRate;
-        [SerializeField] private int projectileStrength;
-        [SerializeField] private int dashStrength;
+        public int playerHealth;
+        public int playerHealthRegen;
+        public int playerSpeed;
+        public int playerDamage;
+        public int projectileStrength;
+        public int dashDistance;
+        public int playerMaxHealth;
         
-        private int _playerMaxHealth;
-        private const float DashCooldown = 5f;
+        private const float DashCooldown = 3f;
+        private float _dashTimer;
         private bool _dashReady;
-        private float _fireCooldown;
+        private const float FireCooldown = 0.4f;
+        private float _needleTimer;
         private bool _fireReady;
         private const int RegenInterval = 1;
         private bool _regenerating;
         
         [Header("Player Abilities")]
-        [SerializeField] private float abilityCooldown;
-        [SerializeField] private int abilityDamage;
+        private const float AbilityCooldown = 1.5f;
+        public int abilityDamage;
         private float _abilityTimer;
         private bool _abilityReady;
 
         [Header("Player Stats")] 
         private int _playerLevel;
         private int _playerExperience;
-        private float _levelUpThreshold;
+        private int _levelUpThreshold;
         private int _playerCash;
 
         [Header("Script References")] 
@@ -50,11 +54,12 @@ namespace Player
         public static event Action OnPlayerLevelUp;
         public static event Action<int> OnPlayerDamageTaken;
         public static event Action OnPlayerFire;
-
         public static event Action OnAbilityFire;
         public static event Action OnPlayerDeath;
-        public static event Action<int> OnPlayerLevelUpdate;
+        public static event Action<int, int> OnPlayerLevelUpdate;
         public static event Action<int> OnPlayerExpUpdate;
+        public static event Action OnPlayerDash;
+        public static event Action<int> OnCashUpdate;
         
         #endregion
         
@@ -81,6 +86,8 @@ namespace Player
             CoinController.OnPlayerPickup += AddCash;
             EnemyController.OnBubblePopped += AddPlayerExperience;
             EnemyController.OnPlayerDamaged += PlayerTakeDamage;
+            CardDisplay.OnCardSelected += HandleUpgradeSelection;
+            CoinController.OnPlayerPickup += AddCash;
         }
         
         private void OnDisable()
@@ -88,15 +95,18 @@ namespace Player
             CoinController.OnPlayerPickup -= AddCash;
             EnemyController.OnBubblePopped -= AddPlayerExperience;
             EnemyController.OnPlayerDamaged -= PlayerTakeDamage;
+            CardDisplay.OnCardSelected -= HandleUpgradeSelection;
+            CoinController.OnPlayerPickup -= AddCash;
         }
 
         private void Update()
         {
-            if (playerHealth < _playerMaxHealth && !_regenerating)
+            if (playerHealth < playerMaxHealth && !_regenerating)
             {
                 StartCoroutine(RegenerateHealth());
             }
-
+            
+            // Ability Logic
             if (!_abilityReady)
             {
                 _abilityTimer -= Time.deltaTime;
@@ -110,34 +120,59 @@ namespace Player
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     _playerFiring.FireAbility(abilityDamage);
-                    _abilityTimer = abilityCooldown;
+                    _abilityTimer = AbilityCooldown;
                     _abilityReady = false;
 
                 }
             }
-
+            
+            // Needle Logic
             if (!_fireReady)
             {
-                _fireCooldown -= Time.deltaTime;
-                if (_fireCooldown <= 0)
+                _needleTimer -= Time.deltaTime;
+                if (_needleTimer <= 0)
                 {
                     _fireReady = true;
                 }
             }
             else
             {
-                if (!Input.GetKeyDown(KeyCode.Space)) return;
-                
-                _playerFiring.FireNeedle(playerDamage, projectileStrength);
-                OnPlayerFire?.Invoke();
-                _fireCooldown = playerFireRate;
-                _fireReady = false;
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    _playerFiring.FireNeedle(playerDamage, projectileStrength);
+                    OnPlayerFire?.Invoke();
+                    _needleTimer = FireCooldown;
+                    _fireReady = false;
+                }
+            }
+            
+            // Dash Logic
+            if (!_dashReady)
+            {
+                _dashTimer -= Time.deltaTime;
+                if (_dashTimer <= 0)
+                {
+                    _dashReady = true;
+                }
+            }
+            else
+            {
+                if (!Input.GetKeyDown(KeyCode.R)) return;
+                OnPlayerDash?.Invoke();
+                _playerMovement.Dash(dashDistance);
+                _dashTimer = DashCooldown;
+                _dashReady = false;
             }
         }
 
         #endregion
 
         #region Variable Modifiers
+
+        private void HandleUpgradeSelection(UpgradeSO upg, int amount)
+        {
+            
+        }
         
         private void SetPlayerLevel(int level)
         {
@@ -170,9 +205,9 @@ namespace Player
         private void LevelUp()
         {
             _playerLevel++;
-            _levelUpThreshold *= 1.5f;
+            _levelUpThreshold *= 2;
             OnPlayerLevelUp?.Invoke();
-            OnPlayerLevelUpdate?.Invoke(_playerLevel);
+            OnPlayerLevelUpdate?.Invoke(_playerLevel, _levelUpThreshold);
         }
 
         private void AddPlayerDamage(int damageAdded)
@@ -184,15 +219,11 @@ namespace Player
         {
             playerSpeed += speedAdded;
         }
-
-        private void ImproveFireRate(float fireRateChange)
-        {
-            playerFireRate /= fireRateChange;
-        }
-
+        
         private void AddCash(int cashAdded)
         {
             _playerCash += cashAdded;
+            OnCashUpdate?.Invoke(_playerCash);
         }
 
         private void AddHealthRegen(int regenAdded)
@@ -210,21 +241,21 @@ namespace Player
 
         private void SetPlayerMaxHealth(int health)
         {
-            _playerMaxHealth = health;
+            playerMaxHealth = health;
             _regenerating = false;
         }
 
         private void AddPlayerHealth(int health)
         {
-            _playerMaxHealth += health;
+            playerMaxHealth += health;
         }
 
         private IEnumerator RegenerateHealth()
         {
             _regenerating = true;
-            if (playerHealth + playerHealthRegen > _playerMaxHealth)
+            if (playerHealth + playerHealthRegen > playerMaxHealth)
             {
-                playerHealth = _playerMaxHealth;
+                playerHealth = playerMaxHealth;
             }
             else
             {

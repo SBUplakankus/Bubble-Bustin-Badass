@@ -10,10 +10,10 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Camera UI
   - Water
   - UI
-  - 
+  - World Post Process
   - 
   - 
   - 

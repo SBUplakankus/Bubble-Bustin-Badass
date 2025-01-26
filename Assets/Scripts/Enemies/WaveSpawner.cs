@@ -18,8 +18,8 @@ namespace Enemies
         
         [Header("Wave Info")] 
         public int waveIndex;
-        private const float SpawnInterval = 1f;
-        private const int WaveInterval = 0;
+        private const float SpawnInterval = 0.8f;
+        private const int WaveInterval = 2;
         private int _activeBubbleTotal;
 
         [Header("Spawn Info")] 
@@ -40,7 +40,7 @@ namespace Enemies
             _activeBubblePool = new List<GameObject>();
             _enemiesToSpawn = new Dictionary<int, int>
             {
-                { 0, 0 },
+                { 0, 5 },
                 { 1, 0 },
                 { 2, 0 },
                 { 3, 0 },
@@ -84,7 +84,7 @@ namespace Enemies
 
         private void UpdateBubblesToSpawn()
         {
-            _enemiesToSpawn[0] += 5; // Basic
+            _enemiesToSpawn[0] += 3; // Basic
             if (waveIndex >= 3) _enemiesToSpawn[1] += 2; // Speed
             if (waveIndex >= 4 && waveIndex % 2 == 1) _enemiesToSpawn[2]++; // Tank
             if (waveIndex >= 9 && waveIndex % 2 == 0) _enemiesToSpawn[3]++; // Elite

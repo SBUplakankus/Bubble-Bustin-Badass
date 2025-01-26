@@ -14,7 +14,6 @@ namespace Enemies
         /// <param name="damage">Damage Amount</param>
         public void BubbleTakeDamage(int damage)
         {
-            Debug.Log(damage);
             parentController.TakeDamage(damage);
         }
     }

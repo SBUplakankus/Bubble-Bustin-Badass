@@ -38,7 +38,6 @@ namespace Player
         {
             if (other.gameObject.CompareTag("Bubble"))
             {
-                Debug.Log("Hit");
                 other.GetComponent<EnemyHitDetection>().BubbleTakeDamage(_damage);
                 _strength--;
                 if (_strength <= 0)

@@ -25,6 +25,8 @@ namespace Player
             PlayerController.OnPlayerLevelUp += HandlePlayerLevel;
             CoinController.OnPlayerPickup += HandleCashCollected;
             EnemyController.OnBubblePopped += HandleBubblePopped;
+            PlayerController.OnAbilityFire += HandleAbilitiesUsed;
+            
         }
 
         private void OnDisable()
@@ -34,6 +36,7 @@ namespace Player
             PlayerController.OnPlayerLevelUp -= HandlePlayerLevel;
             CoinController.OnPlayerPickup -= HandleCashCollected;
             EnemyController.OnBubblePopped -= HandleBubblePopped;
+            PlayerController.OnAbilityFire -= HandleAbilitiesUsed;
         }
 
         private void Update()
