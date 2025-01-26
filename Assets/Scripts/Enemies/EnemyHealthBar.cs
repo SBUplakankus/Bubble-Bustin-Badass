@@ -57,6 +57,7 @@ namespace Enemies
         /// <param name="newHealth">New Health Amount</param>
         public void UpdateHealthBarValues(int newHealth)
         {
+            if (!_healthBar.enabled) return;
             if (Mathf.Approximately(_healthBar.value, _healthBar.maxValue))
             {
                 ShowHealthBar();

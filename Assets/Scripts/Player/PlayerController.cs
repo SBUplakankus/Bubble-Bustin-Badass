@@ -106,7 +106,7 @@ namespace Player
                 StartCoroutine(RegenerateHealth());
             }
             
-            // Ability Logic
+            // Spray Logic
             if (!_abilityReady)
             {
                 _abilityTimer -= Time.deltaTime;
@@ -121,6 +121,7 @@ namespace Player
                 {
                     _playerFiring.FireAbility(abilityDamage);
                     _abilityTimer = AbilityCooldown;
+                    OnAbilityFire?.Invoke();
                     _abilityReady = false;
 
                 }
@@ -137,7 +138,7 @@ namespace Player
             }
             else
             {
-                if (Input.GetKeyDown(KeyCode.Q))
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
                     _playerFiring.FireNeedle(playerDamage, projectileStrength);
                     OnPlayerFire?.Invoke();
@@ -171,7 +172,30 @@ namespace Player
 
         private void HandleUpgradeSelection(UpgradeSO upg, int amount)
         {
-            
+            var upgradeType = upg.upgradeType;
+            switch (upgradeType)
+            {
+                case UpgradeSO.UpgradeType.Health:
+                    AddPlayerHealth(amount);
+                    break;
+                case UpgradeSO.UpgradeType.Speed:
+                    AddPlayerSpeed(amount);
+                    break;
+                case UpgradeSO.UpgradeType.NeedleDamage:
+                    AddPlayerDamage(amount);
+                    break;
+                case UpgradeSO.UpgradeType.AbilityDamage:
+                    AddSprayDamage(amount);
+                    break;
+                case UpgradeSO.UpgradeType.LeapDistance:
+                    AddDashDistance(amount);
+                    break;
+                case UpgradeSO.UpgradeType.NeedleStrength:
+                    AddNeedleStrength(amount);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
         
         private void SetPlayerLevel(int level)
@@ -219,7 +243,21 @@ namespace Player
         {
             playerSpeed += speedAdded;
         }
+
+        private void AddDashDistance(int amount)
+        {
+            dashDistance += amount;
+        }
+
+        private void AddNeedleStrength(int amount)
+        {
+            projectileStrength += amount;
+        }
         
+        private void AddSprayDamage(int amount)
+        {
+            abilityDamage += amount;
+        }
         private void AddCash(int cashAdded)
         {
             _playerCash += cashAdded;
@@ -242,12 +280,14 @@ namespace Player
         private void SetPlayerMaxHealth(int health)
         {
             playerMaxHealth = health;
+            playerHealth = playerMaxHealth;
             _regenerating = false;
         }
 
         private void AddPlayerHealth(int health)
         {
             playerMaxHealth += health;
+            playerHealth = playerMaxHealth;
         }
 
         private IEnumerator RegenerateHealth()
@@ -267,5 +307,6 @@ namespace Player
         }
         
         #endregion
+
     }
 }

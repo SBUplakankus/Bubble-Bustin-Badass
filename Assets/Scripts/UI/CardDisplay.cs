@@ -74,7 +74,7 @@ namespace UI
             Tween.Scale(transform, ShrinkSize, AnimationDuration, AnimationEase, useUnscaledTime: true);
         }
 
-        private void SelectCard()
+        public void SelectCard()
         {
             OnCardSelected?.Invoke(_upgradeSo, _upgradeValue);
         }

@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyName: Boss Bubble
   description: Its the big boss
   bubbleBodyIndex: 4
-  health: 1500
+  health: 2500
   speed: 3
   damage: 500
-  xpGiven: 500
+  xpGiven: 1000

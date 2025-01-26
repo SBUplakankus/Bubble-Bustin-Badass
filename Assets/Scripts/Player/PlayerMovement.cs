@@ -19,20 +19,23 @@ namespace Player
 
         private void Update()
         {
-            if (!(Time.timeScale > 0)) return;
-            
             _movementInput.x = Input.GetAxisRaw("Horizontal");
             _movementInput.y = Input.GetAxisRaw("Vertical");
             
             _movementInput.Normalize();
+
+            if (!(Time.timeScale > 0)) return;
             
-            var movement = new Vector3(_movementInput.x, 0f, _movementInput.y) * (_movementSpeed * Time.deltaTime);
-            
-            _rb.linearVelocity = new Vector3(movement.x / Time.deltaTime, _rb.linearVelocity.y, movement.z / Time.deltaTime);
+            var deltaTime = Time.deltaTime > 0 ? Time.deltaTime : 1f;
+
+            var movement = new Vector3(_movementInput.x, 0f, _movementInput.y) * (_movementSpeed * deltaTime);
+
+            _rb.linearVelocity = new Vector3(movement.x / deltaTime, _rb.linearVelocity.y, movement.z / deltaTime);
 
             if (!(_movementInput.sqrMagnitude > 0f)) return;
+            
             var targetRotation = Quaternion.LookRotation(new Vector3(_movementInput.x, 0f, _movementInput.y));
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, RotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, RotationSpeed * deltaTime);
         }
 
         public void SetMovementSpeed(float speed)

@@ -87,8 +87,8 @@ namespace Enemies
             _enemiesToSpawn[0] += 3; // Basic
             if (waveIndex >= 3) _enemiesToSpawn[1] += 2; // Speed
             if (waveIndex >= 4 && waveIndex % 2 == 1) _enemiesToSpawn[2]++; // Tank
-            if (waveIndex >= 9 && waveIndex % 2 == 0) _enemiesToSpawn[3]++; // Elite
-            if (waveIndex >= 15 && waveIndex % 5 == 0) _enemiesToSpawn[4]++; // Boss
+            if (waveIndex >= 7 && waveIndex % 2 == 0) _enemiesToSpawn[3]++; // Elite
+            if (waveIndex >= 11 && waveIndex % 5 == 0) _enemiesToSpawn[4]++; // Boss
             
             for(var i = 0; i < enemyTypes.Length; i++)
             {
