@@ -31,7 +31,7 @@ namespace UI
 
         private void Start()
         {
-            postProcess.SetActive(false);
+            postProcess.SetActive(true);
             HideCards();
         }
 
@@ -48,6 +48,10 @@ namespace UI
             UIController.OnGameResume -= HandleGameResume;
         }
 
+        public void DisableBloom()
+        {
+            postProcess.SetActive(false);
+        }
         private void HandleLevelUp()
         {
             postProcess.SetActive(true);

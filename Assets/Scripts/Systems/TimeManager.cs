@@ -9,18 +9,22 @@ namespace Systems
     {
         private void Start()
         {
-            Time.timeScale = 1;
+            Time.timeScale = 0;
         }
 
         private void OnEnable()
         {
             PlayerController.OnPlayerLevelUp += HandleGamePause;
             UIController.OnGameResume += HandleGameResume;
+            UIController.OnGamePause += HandleGamePause;
+            UIController.OnGameUnpause += HandleGameResume;
         }
         private void OnDisable()
         {
             PlayerController.OnPlayerLevelUp -= HandleGamePause;
             UIController.OnGameResume -= HandleGameResume;
+            UIController.OnGamePause -= HandleGamePause;
+            UIController.OnGameUnpause -= HandleGameResume;
         }
 
         private void HandleGamePause()

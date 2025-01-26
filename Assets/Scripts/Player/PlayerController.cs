@@ -46,6 +46,7 @@ namespace Player
         [Header("Script References")] 
         private PlayerMovement _playerMovement;
         private PlayerFiring _playerFiring;
+        public AbilityDisplay abilityDisplay;
         
         #endregion
 
@@ -79,6 +80,7 @@ namespace Player
             SetPlayerCash(0);
             SetLevelUpThreshold(100);
             SetPlayerMaxHealth(playerHealth);
+            abilityDisplay.SetInitialSliderValues(FireCooldown, AbilityCooldown, DashCooldown);
         }
 
         private void OnEnable()
