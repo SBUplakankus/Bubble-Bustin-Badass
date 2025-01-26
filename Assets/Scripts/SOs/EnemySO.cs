@@ -10,6 +10,7 @@ namespace SOs
         public string enemyName;
         [TextArea (2,10)] public string description;
         public int bubbleBodyIndex;
+        public AudioClip popAudioClip;
         
         [Header("Enemy Stats")] 
         public int health;

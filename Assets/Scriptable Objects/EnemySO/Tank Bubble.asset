@@ -15,6 +15,7 @@ MonoBehaviour:
   enemyName: Tank Bubble
   description: Slow and steady but it can take a beating.
   bubbleBodyIndex: 2
+  popAudioClip: {fileID: 8300000, guid: f4f2ad975ec289f4f8b25c077e92ab72, type: 3}
   health: 500
   speed: 2
   damage: 50

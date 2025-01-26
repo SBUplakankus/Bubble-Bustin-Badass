@@ -15,6 +15,7 @@ MonoBehaviour:
   enemyName: Boss Bubble
   description: Its the big boss
   bubbleBodyIndex: 4
+  popAudioClip: {fileID: 8300000, guid: 461ea31867540cd4385e25fed841d7f4, type: 3}
   health: 2500
   speed: 3
   damage: 500
