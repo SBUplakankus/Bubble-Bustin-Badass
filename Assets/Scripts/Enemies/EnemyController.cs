@@ -24,6 +24,7 @@ namespace Enemies
         private AudioSource _audio;
 
         public static event Action<int> OnBubblePopped;
+        public static event Action<AudioClip> OnPopNoise;
         public static event Action<GameObject> OnBubbleReset;
         public static event Action<int> OnPlayerDamaged;
 
@@ -83,7 +84,7 @@ namespace Enemies
             _healthBar.UpdateHealthBarValues(_enemyHealth);
             PlayBubbleHitAudio(false);
             if (_enemyHealth > 0) return;
-            PlayBubbleHitAudio(true);
+            OnPopNoise?.Invoke((AudioClip)_audio.resource);
             BubblePopped();
         }
         

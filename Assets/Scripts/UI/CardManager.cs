@@ -28,6 +28,8 @@ namespace UI
         private const float AnimationDuration = 1f;
         private const Ease AnimationEase = Ease.OutCubic;
         private const float CardInterval = 0.25f;
+        
+        public static event Action OnCardsDisplay;
 
         private void Start()
         {
@@ -55,6 +57,7 @@ namespace UI
         private void HandleLevelUp()
         {
             postProcess.SetActive(true);
+            OnCardsDisplay?.Invoke();
             StartCoroutine(CardDisplayCoroutine());
         }
 

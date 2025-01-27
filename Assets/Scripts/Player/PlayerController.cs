@@ -25,7 +25,7 @@ namespace Player
         private const float DashCooldown = 3f;
         private float _dashTimer;
         private bool _dashReady;
-        private const float FireCooldown = 0.4f;
+        private const float FireCooldown = 0.6f;
         private float _needleTimer;
         private bool _fireReady;
         private const int RegenInterval = 1;
