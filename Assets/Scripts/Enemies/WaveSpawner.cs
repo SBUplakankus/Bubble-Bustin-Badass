@@ -19,7 +19,7 @@ namespace Enemies
         [Header("Wave Info")] 
         public int waveIndex;
         private const float SpawnInterval = 0.8f;
-        private const int WaveInterval = 5;
+        private const int WaveInterval = 2;
         private int _activeBubbleTotal;
 
         [Header("Spawn Info")] 
@@ -50,7 +50,7 @@ namespace Enemies
 
         private void Update()
         {
-            if (_activeBubbleTotal > 0 || _spawningWave) return;
+            if (_activeBubbleTotal > 0 || _spawningWave || Time.timeScale < 1) return;
             
             SpawnWave();
         }

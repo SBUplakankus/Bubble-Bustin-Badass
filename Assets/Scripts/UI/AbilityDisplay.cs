@@ -8,7 +8,8 @@ namespace UI
 {
     public class AbilityDisplay : MonoBehaviour
     {
-        public Slider needle, spray, dash;
+        public Slider needle, spray, dash, health;
+        private const float AnimationDuration = 0.3f;
 
         private void OnEnable()
         {
@@ -58,6 +59,22 @@ namespace UI
         {
             dash.value = 0;
             Tween.UISliderValue(dash, dash.maxValue, dash.maxValue);
+        }
+
+        public void SetHealthValues(int maxHealth)
+        {
+            health.maxValue = maxHealth;
+            health.value = maxHealth;
+        }
+        public void UpdateHealthMax(int maxHealth)
+        {
+            health.maxValue = maxHealth;
+            Tween.UISliderValue(health, maxHealth, AnimationDuration);
+        }
+
+        public void UpdateHealth(int newHealth)
+        {
+            Tween.UISliderValue(health, newHealth, AnimationDuration);
         }
     }
 }

@@ -147,7 +147,7 @@ namespace UI
                         break;
                     case UpgradeSO.UpgradeType.NeedleDamage:
                         upgradeText = "Increased Needle Damage";
-                        oldStat = player.abilityDamage;
+                        oldStat = player.playerDamage;
                         newStat = oldStat + upgradeValue;
                         break;
                     case UpgradeSO.UpgradeType.NeedleStrength:

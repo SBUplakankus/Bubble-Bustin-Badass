@@ -17,6 +17,6 @@ MonoBehaviour:
   bubbleBodyIndex: 2
   popAudioClip: {fileID: 8300000, guid: f4f2ad975ec289f4f8b25c077e92ab72, type: 3}
   health: 500
-  speed: 2
+  speed: 3
   damage: 50
-  xpGiven: 600
+  xpGiven: 1000

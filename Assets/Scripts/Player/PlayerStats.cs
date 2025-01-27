@@ -8,15 +8,16 @@ namespace Player
     public class PlayerStats : MonoBehaviour
     {
         [Header("Game Stats")] 
-        private float _gameDuration;
-        private int _bubblesPopped;
-        private int _damageTaken;
-        private int _needlesFired;
-        private int _abilitiesUsed;
-        private int _playerLevel;
-        private int _playerExperience;
-        private int _cashCollected;
-        private int _enemyWave;
+        public float gameDuration;
+        public int bubblesPopped;
+        public int damageTaken;
+        public int needlesFired;
+        public int abilitiesUsed;
+        public int playerLevel;
+        public int playerExperience;
+        public int cashCollected;
+        public int enemyWave;
+        public int dashesUsed;
 
         private void OnEnable()
         {
@@ -26,7 +27,9 @@ namespace Player
             CoinController.OnPlayerPickup += HandleCashCollected;
             EnemyController.OnBubblePopped += HandleBubblePopped;
             PlayerController.OnAbilityFire += HandleAbilitiesUsed;
-            
+            PlayerController.OnPlayerDash += HandlePlayerDash;
+            WaveSpawner.OnWaveStart += HandleNewWave;
+
         }
 
         private void OnDisable()
@@ -37,47 +40,59 @@ namespace Player
             CoinController.OnPlayerPickup -= HandleCashCollected;
             EnemyController.OnBubblePopped -= HandleBubblePopped;
             PlayerController.OnAbilityFire -= HandleAbilitiesUsed;
+            PlayerController.OnPlayerDash -= HandlePlayerDash;
+            WaveSpawner.OnWaveStart -= HandleNewWave;
         }
 
         private void Update()
         {
-            _gameDuration += Time.deltaTime;
+            gameDuration += Time.deltaTime;
         }
 
+        private void HandlePlayerDash()
+        {
+            dashesUsed++;
+        }
+        
         private void HandleDamageTaken(int damage)
         {
-            _damageTaken += damage;
+            damageTaken += damage;
         }
 
         private void HandleNeedleFired()
         {
-            _needlesFired++;
+            needlesFired++;
         }
 
         private void HandleAbilitiesUsed()
         {
-            _abilitiesUsed++;
+            abilitiesUsed++;
         }
 
-        private void HandleNewWave()
+        private void HandleNewWave(int a, int b)
         {
-            _enemyWave++;
+            enemyWave++;
         }
 
         private void HandleCashCollected(int cash)
         {
-            _cashCollected += cash;
+            cashCollected += cash;
         }
 
         private void HandlePlayerLevel()
         {
-            _playerLevel++;
+            playerLevel++;
         }
 
         private void HandleBubblePopped(int xp)
         {
-            _playerExperience += xp;
-            _bubblesPopped++;
+            playerExperience += xp;
+            bubblesPopped++;
+        }
+
+        public PlayerStats GetPlayerStats()
+        {
+            return this;
         }
     }
 }
