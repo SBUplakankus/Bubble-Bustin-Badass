@@ -24,12 +24,8 @@ namespace Player
 
             _movementInput.x = Input.GetAxisRaw("Horizontal");
             _movementInput.y = Input.GetAxisRaw("Vertical");
-
-            // Add a threshold to ignore tiny input values
-            if (Mathf.Abs(_movementInput.x) < 0.1f) _movementInput.x = 0f;
-            if (Mathf.Abs(_movementInput.y) < 0.1f) _movementInput.y = 0f;
-
             _movementInput.Normalize();
+
 
             if (!(Time.timeScale > 0)) return;
 
