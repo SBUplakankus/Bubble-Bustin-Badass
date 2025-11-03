@@ -19,13 +19,16 @@ namespace Player
 
         private void Update()
         {
+            // Explicitly reset movement input
+            _movementInput = Vector2.zero;
+
             _movementInput.x = Input.GetAxisRaw("Horizontal");
             _movementInput.y = Input.GetAxisRaw("Vertical");
-            
             _movementInput.Normalize();
 
+
             if (!(Time.timeScale > 0)) return;
-            
+
             var deltaTime = Time.deltaTime > 0 ? Time.deltaTime : 1f;
 
             var movement = new Vector3(_movementInput.x, 0f, _movementInput.y) * (_movementSpeed * deltaTime);

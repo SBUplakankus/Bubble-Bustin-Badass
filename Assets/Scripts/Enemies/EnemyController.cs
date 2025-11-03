@@ -21,14 +21,17 @@ namespace Enemies
         private EnemyHealthBar _healthBar;
         private NavMeshAgent _navMeshAgent;
         private Transform _player;
+        private AudioSource _audio;
 
         public static event Action<int> OnBubblePopped;
+        public static event Action<AudioClip> OnPopNoise;
         public static event Action<GameObject> OnBubbleReset;
         public static event Action<int> OnPlayerDamaged;
 
         private void Awake()
         {
             _healthBar = GetComponent<EnemyHealthBar>();
+            _audio = GetComponent<AudioSource>();
         }
 
         private void Update()
@@ -64,6 +67,7 @@ namespace Enemies
             _enemyMaxHealth = _enemyHealth;
             _enemyDamage = enemySo.damage;
             _enemyXpGiven = enemySo.xpGiven;
+            _audio.resource = enemySo.popAudioClip;
             _healthBar.SetInitialHealthBarValues(_enemyHealth, enemySo.bubbleBodyIndex);
             
             _navMeshAgent.speed = enemySo.speed;
@@ -78,7 +82,9 @@ namespace Enemies
         {
             _enemyHealth -= damage;
             _healthBar.UpdateHealthBarValues(_enemyHealth);
+            PlayBubbleHitAudio(false);
             if (_enemyHealth > 0) return;
+            OnPopNoise?.Invoke((AudioClip)_audio.resource);
             BubblePopped();
         }
         
@@ -92,6 +98,22 @@ namespace Enemies
         {
             OnPlayerDamaged?.Invoke(_enemyDamage);
             OnBubbleReset?.Invoke(gameObject);
+        }
+
+        private void PlayBubbleHitAudio(bool isPopped)
+        {
+            if (isPopped)
+            {
+                _audio.pitch = 0.8f;
+                _audio.volume = 0.5f;
+            }
+            else
+            {
+                _audio.pitch = 1.1f;
+                _audio.volume = 1f;
+            }
+            
+            _audio.Play();
         }
     }
 }

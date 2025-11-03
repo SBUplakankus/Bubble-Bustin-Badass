@@ -15,7 +15,8 @@ MonoBehaviour:
   enemyName: Elite Bubble
   description: Bubble Special Forces
   bubbleBodyIndex: 3
-  health: 300
+  popAudioClip: {fileID: 8300000, guid: 6b9036bb498b7a0418a7488369a12935, type: 3}
+  health: 400
   speed: 5
   damage: 100
-  xpGiven: 250
+  xpGiven: 1200

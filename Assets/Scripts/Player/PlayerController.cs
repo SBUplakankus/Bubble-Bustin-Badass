@@ -25,7 +25,7 @@ namespace Player
         private const float DashCooldown = 3f;
         private float _dashTimer;
         private bool _dashReady;
-        private const float FireCooldown = 0.4f;
+        private const float FireCooldown = 0.6f;
         private float _needleTimer;
         private bool _fireReady;
         private const int RegenInterval = 1;
@@ -232,6 +232,10 @@ namespace Player
         {
             _playerLevel++;
             _levelUpThreshold *= 2;
+            if (_playerLevel > 5)
+            {
+                _levelUpThreshold -= (_playerLevel * 50);
+            }
             OnPlayerLevelUp?.Invoke();
             OnPlayerLevelUpdate?.Invoke(_playerLevel, _levelUpThreshold);
         }
@@ -244,6 +248,7 @@ namespace Player
         private void AddPlayerSpeed(int speedAdded)
         {
             playerSpeed += speedAdded;
+            _playerMovement.SetMovementSpeed(playerSpeed);
         }
 
         private void AddDashDistance(int amount)
@@ -274,6 +279,7 @@ namespace Player
         private void PlayerTakeDamage(int damage)
         {
             playerHealth -= damage;
+            abilityDisplay.UpdateHealth(playerHealth);
             OnPlayerDamageTaken?.Invoke(damage);
             if (playerHealth > 0) return;
             OnPlayerDeath?.Invoke();
@@ -283,6 +289,7 @@ namespace Player
         {
             playerMaxHealth = health;
             playerHealth = playerMaxHealth;
+            abilityDisplay.SetHealthValues(playerMaxHealth);
             _regenerating = false;
         }
 
@@ -290,6 +297,7 @@ namespace Player
         {
             playerMaxHealth += health;
             playerHealth = playerMaxHealth;
+            abilityDisplay.UpdateHealthMax(playerMaxHealth);
         }
 
         private IEnumerator RegenerateHealth()
@@ -304,6 +312,7 @@ namespace Player
                 playerHealth += playerHealthRegen;
             }
             
+            abilityDisplay.UpdateHealth(playerHealth);
             yield return new WaitForSeconds(RegenInterval);
             _regenerating = false;
         }

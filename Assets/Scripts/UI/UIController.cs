@@ -18,7 +18,8 @@ namespace UI
             levelUpPanel,
             tutorialPanel,
             pausePanel,
-            statsPanel;
+            statsPanel,
+            gameOverPanel;
         
         private const float AnimationDuration = 0.3f;
         private const Ease AnimationEase = Ease.OutCubic;
@@ -30,7 +31,8 @@ namespace UI
         private const int HideTutorialPanelY = 1200;
         private const int HidePausePanelX = -650;
         private const int HideStatsX = 780;
-        private const int HideAbilityY = -320;
+        private const int HideAbilityY = -340;
+        private const int HideGameOverY = 1110;
         
 
         public static event Action OnGameResume;
@@ -54,11 +56,13 @@ namespace UI
         private void OnEnable()
         {
             PlayerController.OnPlayerLevelUp += HandleLevelUp;
+            PlayerController.OnPlayerDeath += HandleGameOver;
         }
         
         private void OnDisable()
         {
             PlayerController.OnPlayerLevelUp -= HandleLevelUp;
+            PlayerController.OnPlayerDeath -= HandleGameOver;
         }
 
         private void HandleLevelUp()
@@ -80,6 +84,28 @@ namespace UI
         private void ShowAbilityPanel()
         {
             Tween.UIAnchoredPosition(abilitiesPanel, Vector2.zero, AnimationDuration, AnimationEase, useUnscaledTime: true);
+        }
+
+        private void HandleGameOver()
+        {
+            bloom.SetActive(true);
+            uiBlur.SetActive(true);
+            HideAbilityPanel();
+            HideXpPanel();
+            HideEnemyInfoPanel();
+            ShowGameOver();
+        }
+
+        private void ShowGameOver()
+        {
+            Tween.UIAnchoredPosition(gameOverPanel, Vector2.zero, AnimationDuration, AnimationEase, useUnscaledTime: true);
+        }
+
+        private void HideGameOver()
+        {
+            var pos = gameOverPanel.anchoredPosition;
+            pos.y = HideGameOverY;
+            gameOverPanel.anchoredPosition = pos;
         }
         
         public void HidePauseMenu()

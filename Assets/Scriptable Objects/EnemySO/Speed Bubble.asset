@@ -15,7 +15,8 @@ MonoBehaviour:
   enemyName: Speedy Bubble
   description: Faster than most other bubbles
   bubbleBodyIndex: 1
+  popAudioClip: {fileID: 8300000, guid: b97a3cb375a2cf14cb5dc8dae5b1649b, type: 3}
   health: 30
-  speed: 5
+  speed: 6
   damage: 15
-  xpGiven: 25
+  xpGiven: 60

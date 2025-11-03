@@ -23,6 +23,7 @@ namespace UI
         private int _upgradeValue;
 
         public static event Action<UpgradeSO, int> OnCardSelected;
+        
 
         /// <summary>
         /// Set the details of the card for Display

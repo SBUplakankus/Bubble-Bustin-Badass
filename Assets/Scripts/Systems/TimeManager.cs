@@ -15,6 +15,7 @@ namespace Systems
         private void OnEnable()
         {
             PlayerController.OnPlayerLevelUp += HandleGamePause;
+            PlayerController.OnPlayerDeath += HandleGamePause;
             UIController.OnGameResume += HandleGameResume;
             UIController.OnGamePause += HandleGamePause;
             UIController.OnGameUnpause += HandleGameResume;
@@ -22,6 +23,7 @@ namespace Systems
         private void OnDisable()
         {
             PlayerController.OnPlayerLevelUp -= HandleGamePause;
+            PlayerController.OnPlayerDeath -= HandleGamePause;
             UIController.OnGameResume -= HandleGameResume;
             UIController.OnGamePause -= HandleGamePause;
             UIController.OnGameUnpause -= HandleGameResume;

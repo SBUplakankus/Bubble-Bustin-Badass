@@ -15,7 +15,8 @@ MonoBehaviour:
   enemyName: Bubble
   description: Its a basic bubble but it can still hurt.
   bubbleBodyIndex: 0
+  popAudioClip: {fileID: 8300000, guid: c880e4693ffbf4040aad81788b21537b, type: 3}
   health: 50
-  speed: 3
+  speed: 4
   damage: 20
-  xpGiven: 20
+  xpGiven: 25

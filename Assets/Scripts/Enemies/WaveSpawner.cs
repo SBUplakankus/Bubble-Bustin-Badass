@@ -50,7 +50,7 @@ namespace Enemies
 
         private void Update()
         {
-            if (_activeBubbleTotal > 0 || _spawningWave) return;
+            if (_activeBubbleTotal > 0 || _spawningWave || Time.timeScale < 1) return;
             
             SpawnWave();
         }
@@ -84,11 +84,11 @@ namespace Enemies
 
         private void UpdateBubblesToSpawn()
         {
-            _enemiesToSpawn[0] += 3; // Basic
-            if (waveIndex >= 3) _enemiesToSpawn[1] += 2; // Speed
-            if (waveIndex >= 4 && waveIndex % 2 == 1) _enemiesToSpawn[2]++; // Tank
-            if (waveIndex >= 7 && waveIndex % 2 == 0) _enemiesToSpawn[3]++; // Elite
-            if (waveIndex >= 11 && waveIndex % 5 == 0) _enemiesToSpawn[4]++; // Boss
+            _enemiesToSpawn[0] += 2; // Basic
+            if (waveIndex >= 3 && waveIndex % 2 == 1) _enemiesToSpawn[1] += 2; // Speed
+            if (waveIndex >= 5 && waveIndex % 2 == 1) _enemiesToSpawn[2]++; // Tank
+            if (waveIndex >= 7 && waveIndex % 2 == 1) _enemiesToSpawn[3]++; // Elite
+            if (waveIndex >= 11 && waveIndex % 6 == 0) _enemiesToSpawn[4]++; // Boss
             
             for(var i = 0; i < enemyTypes.Length; i++)
             {
